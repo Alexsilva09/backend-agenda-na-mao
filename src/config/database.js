@@ -10,5 +10,5 @@ module.exports = {
         timespamps: true,
         underscored: true,
         underscoredAll: true,
-    }
+    },
 }
