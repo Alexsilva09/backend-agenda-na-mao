@@ -1,13 +1,40 @@
 import { v4 } from 'uuid'
+import * as Yup from 'yup'
 
 import User from '../models/User'
 
 class UserController {
    async store(request, response){
 
-        const {name,estabelecimento, cod, tel, email, password_hash, admin} = request.body
+    const schema = Yup.object().shape({
 
-        
+        name: Yup.string().required(),
+        estabelecimento: Yup.string(),
+        cod: Yup.string().required().min(2),
+        tel: Yup.string().required().min(9),
+        email: Yup.string().required().email(),
+        password: Yup.string().required().min(6),
+
+    })
+
+    try{
+
+    await schema.validateSync(request.body, {abortEarly: false})
+
+} catch(err){
+
+    return response.status(400).json({error: err.errors})
+}
+        const {name,estabelecimento, cod, tel, email, password, admin} = request.body
+
+        const userExists = await User.findOne({
+            where: { email },
+        })
+
+        if(userExists){
+            return response.status(400).json({error: 'User aleready exists'})
+        }
+
         const user =  await User.create({
             id: v4(),
             name,
@@ -15,11 +42,11 @@ class UserController {
             cod,
             tel,
             email,
-            password_hash,
+            password,
             admin,
         })
 
-        return response.status(201).json(user)
+        return response.status(201).json({id: user.name, estabelecimento, email, admin})
     }
 }
 
