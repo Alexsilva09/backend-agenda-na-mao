@@ -1,15 +1,19 @@
 import * as Yup from 'yup'
 
+import Horario from '../models/Horario'
+
 class Horarios {
 
     async store(request,response){
 
         const schema = Yup.object().shape({
+
             especialidade: Yup.string().required(),
             colaboradores: Yup.string().required(),
             dias: Yup.number().required(),
             inicio: Yup.date().required(),
             fim: Yup.date().required(),
+            
         })
 
         try{
@@ -18,7 +22,21 @@ class Horarios {
             return response.status(400).json({error: err.errors})
         }
 
-        return response.json({ok: true})
+        const { especialidade, colaboradores, dias, inicio, fim } = request.body
+
+        const newHorario = await Horario.create({
+            
+            especialidade,
+            colaboradores,
+            dias,
+            inicio,
+            fim
+        })
+
+
+
+
+        return response.json(newHorario)
 
     }
 
