@@ -6,7 +6,7 @@ module.exports = {
     
      await queryInterface.createTable('servicos', { 
       
-      servico_id:{
+      id:{
 
         type: Sequelize.INTEGER,
         allowNull: false,
