@@ -1,23 +1,23 @@
 import Sequelize, { Model } from 'sequelize'
 
-class Servico extends Model {
+class Professionals extends Model {
 
     static init(sequelize){
         super.init(
             {
-
                 name: Sequelize.STRING,
-                price: Sequelize.INTEGER,
-                time: Sequelize.INTEGER,
+                tel: Sequelize.STRING,
+                password_hash: Sequelize.INTEGER,
            },
         
            {
              sequelize,
            }
         )
+
         return this
     }
 
 }
 
-export default Servico
+export default Professionals

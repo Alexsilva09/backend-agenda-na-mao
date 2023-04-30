@@ -3,38 +3,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    
-    await queryInterface.createTable('horarios', { 
+   
+    await queryInterface.createTable('professionals', { 
       
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
       },
-
-      especialidade: {
+      
+      name:{
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      
+      tel:{  
         type: Sequelize.STRING,
         allowNull: false,
       },
 
-      colaboradores: {
+      password_hash: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-
-      dias: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-    
-      inicio:{
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-
-      fim:{
-        type: Sequelize.DATE,
         allowNull: false,
       },
 
@@ -42,7 +32,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull:false,
       },
-
+      
       updated_at:{
         type: Sequelize.DATE,
         allowNull:false,
@@ -53,8 +43,8 @@ module.exports = {
   },
 
   async down (queryInterface) {
-    
-    await queryInterface.dropTable('horarios');
-     
+   
+     await queryInterface.dropTable('professionals');
+  
   }
 };
