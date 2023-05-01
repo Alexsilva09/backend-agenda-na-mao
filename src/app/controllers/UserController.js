@@ -48,6 +48,11 @@ class UserController {
 
         return response.status(201).json({id: user.name, estabelecimento, email, admin})
     }
+
+    async index(request, response){
+        const allUsers = await User.findAll()
+        return response.status(200).json(allUsers)
+    }
 }
 
 export default new UserController()

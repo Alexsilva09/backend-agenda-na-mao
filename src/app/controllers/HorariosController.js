@@ -29,6 +29,8 @@ class Horarios {
         const horarioExists = await Horario.findOne({
             where:{
                 especialidade_id,
+                colaboradores_id,
+                dias,
             }
         })
 
@@ -55,7 +57,12 @@ class Horarios {
             { model: Servicos,
              as: 'especialidade', 
              attributes: ['id', 'name'] 
-            }],
+            },{
+                model: Professionals,
+                as: 'colaboradores',
+                attributes: ['id', 'name']
+            }], 
+
         })
         return response.json(allHorarios)
     }

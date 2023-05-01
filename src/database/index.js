@@ -7,8 +7,9 @@ import configDataBase from '../config/database'
 import Horario from "../app/models/Horario"
 import Servicos from "../app/models/Servicos"
 import Professionals from "../app/models/Professionals"
+import User from "../app/models/User"
 
-const models = [User, Horario, Servicos, Professionals,]
+const models = [User, Horario, Servicos, Professionals,User,]
 
 class Database {
     constructor(){
