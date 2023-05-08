@@ -1,73 +1,61 @@
 import * as Yup from 'yup'
-import Servicos from '../models/Servicos'
-import Professionals from '../models/Professionals'
+import Horarios from '../models/Horarios'
+import Service from '../models/Service'
+import Collaborator from '../models/Collaborator'
 
-import Horario from '../models/Horario'
+class HorariosController {
 
-class Horarios {
+ async store(request, response){
 
-    async store(request,response){
+    const schema = Yup.object().shape({
+        services_id: Yup.number().required(),
+        collaborators_id: Yup.number().required(),
+        days: Yup.number().required(),
+        start: Yup.date().required(),
+        end: Yup.date().required(),
+    })
 
-        const schema = Yup.object().shape({
+    try{
+        await schema.validateSync(request.body, {abortEarly: false})
 
-            especialidade_id: Yup.number().required(),
-            colaboradores_id: Yup.number().required(),
-            dias: Yup.number().required(),
-            inicio: Yup.date().required(),
-            fim: Yup.date().required(),
-            
-        })
+       }catch(err){
+        return response.status(400).json({error: err.errors})
+       }
 
-        try{
-            await schema.validateSync(request.body, {abortEarly: false})
-        } catch(err){
-            return response.status(400).json({error: err.errors})
+       const { services_id, collaborators_id, days, start, end,} = request.body
+
+       const horarios = await Horarios.create({
+
+        services_id,
+        collaborators_id,
+        days,
+        start,
+        end,
+
+       })
+
+       return response.json(horarios)
+ }
+
+        async index(request,response){
+        const allHorarios = await Horarios.findAll({
+
+        include:[
+            {
+            model: Service,
+            as: 'service',
+            attributes: ['id','name'],
+        },
+        {
+            model: Collaborator,
+            as: 'Collaborator',
+            attributes: ['id','name'],
         }
-
-        const { especialidade_id, colaboradores_id, dias, inicio, fim } = request.body
-
-        const horarioExists = await Horario.findOne({
-            where:{
-                especialidade_id,
-                colaboradores_id,
-                dias,
-            }
+         ]
         })
-
-        if(horarioExists){
-
-            return response.status(400).json({error: " id já existe."})
-        }
-
-        const newHorario = await Horario.create({
-            
-            especialidade_id,
-            colaboradores_id,
-            dias,
-            inicio,
-            fim
-        })
-
-        return response.status(201).json(newHorario)
-
-    }
-    async index(request, response){
-        const allHorarios = await Horario.findAll({
-        include: [ 
-            { model: Servicos,
-             as: 'especialidade', 
-             attributes: ['id', 'name'] 
-            },{
-                model: Professionals,
-                as: 'colaboradores',
-                attributes: ['id', 'name']
-            }], 
-
-        })
-        return response.json(allHorarios)
-    }
+        return response.status(200).json(allHorarios)
+}
 
 }
 
-
-export default new Horarios()
+export default new HorariosController()

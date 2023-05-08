@@ -4,40 +4,40 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     
-    await queryInterface.createTable('horarios', { 
+     await queryInterface.createTable('collaborators', { 
       
-      id: {
+      id:{
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
       },
 
-      especialidade: {
+      path:{
+        type: Sequelize.STRING
+      },
+
+      name:{
         type: Sequelize.STRING,
         allowNull: false,
       },
 
-      colaboradores: {
+      tel:{
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-
-      dias: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-    
-      inicio:{
-        type: Sequelize.DATE,
         allowNull: false
       },
-
-      fim:{
-        type: Sequelize.DATE,
+      
+      moderator:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
 
+      password:{
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      
       created_at:{
         type: Sequelize.DATE,
         allowNull:false,
@@ -47,15 +47,14 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull:false,
       },
-
+    
     });
      
   },
 
   async down (queryInterface) {
     
-    await queryInterface.dropTable('horarios');
-     
+     await queryInterface.dropTable('collaborators');
+    
   }
 };
-

@@ -14,6 +14,7 @@ class UserController {
         tel: Yup.string().required().min(9),
         email: Yup.string().required().email(),
         password: Yup.string().required().min(6),
+        admin: Yup.boolean()
 
     })
 

@@ -4,21 +4,20 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     
-  await queryInterface.removeColumn('horarios', 'especialidade',);
-
+     await queryInterface.removeColumn('services', 'time');
+     
   },
 
   async down (queryInterface, Sequelize) {
    
-    await queryInterface.createColumn('horarios', {
+     await queryInterface.createColumn('services', {
 
-      especialidade: {
-        type: Sequelize.STRING,
+      time:{
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-
-    });
-  
+      
+     });
+     
   }
 };
-
