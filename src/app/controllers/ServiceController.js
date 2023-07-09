@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 
 import Service from '../models/Service'
+import { Sequelize } from 'sequelize'
 
 class ServiceController{
 
@@ -47,7 +48,16 @@ class ServiceController{
     }
 
     async index(request,response){
-        const allService = await Service.findAll()
+        const allService = await Service.findAll({
+
+            attributes: [ 'id', 'name', 'price','time']
+
+             /* attributes:[
+                [Sequelize.fn("to_char", Sequelize.col('time'), "HH:mm"), 'time',], 'name', 'price', 'id'
+              ],  */
+
+
+        })
         return response.status(200).json(allService)
     }
 }

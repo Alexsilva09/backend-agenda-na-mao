@@ -2,6 +2,7 @@ import * as Yup from 'yup'
 import Horarios from '../models/Horarios'
 import Service from '../models/Service'
 import Collaborator from '../models/Collaborator'
+import { Sequelize} from 'sequelize'
 
 class HorariosController {
 
@@ -10,7 +11,7 @@ class HorariosController {
     const schema = Yup.object().shape({
         services_id: Yup.number().required(),
         collaborators_id: Yup.number().required(),
-        days: Yup.number().required(),
+        days: Yup.string().required(),
         start: Yup.date().required(),
         end: Yup.date().required(),
     })
@@ -22,7 +23,7 @@ class HorariosController {
         return response.status(400).json({error: err.errors})
        }
 
-       const { services_id, collaborators_id, days, start, end,} = request.body
+       const { services_id, collaborators_id, days, start, end} = request.body
 
        const horarios = await Horarios.create({
 
@@ -31,27 +32,36 @@ class HorariosController {
         days,
         start,
         end,
+        
 
        })
 
-       return response.json(horarios)
+       return response.status(201).json(horarios)
  }
 
         async index(request,response){
         const allHorarios = await Horarios.findAll({
+            
+          /*   attributes: [ 
 
-        include:[
+                [Sequelize.fn("to_char", Sequelize.col('start'), "DD/MM/YYYY HH:mm"), 'start'], 
+                [Sequelize.fn("to_char", Sequelize.col('end'), "DD/MM/YYYY HH:mm"), 'end'],'days'
+            ], */
+
+            include:[
+                {
+                model: Service,
+                as: 'service',
+                attributes: ['name','price'],
+            },
             {
-            model: Service,
-            as: 'service',
-            attributes: ['id','name'],
-        },
-        {
-            model: Collaborator,
-            as: 'Collaborator',
-            attributes: ['id','name'],
-        }
-         ]
+                model: Collaborator,
+                as: 'Collaborator',
+                attributes: ['name'],
+            },
+    
+             ],
+
         })
         return response.status(200).json(allHorarios)
 }

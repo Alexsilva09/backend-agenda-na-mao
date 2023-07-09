@@ -8,7 +8,7 @@ class Service extends Model {
             
             name: Sequelize.STRING,
             price: Sequelize.INTEGER,
-            time: Sequelize.INTEGER,
+            time: Sequelize.DATE,
 
         },{
             sequelize,
