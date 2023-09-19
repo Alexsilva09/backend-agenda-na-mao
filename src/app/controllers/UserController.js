@@ -10,7 +10,6 @@ class UserController {
 
         name: Yup.string().required(),
         estabelecimento: Yup.string(),
-        cod: Yup.string().required().min(2),
         tel: Yup.string().required().min(9),
         email: Yup.string().required().email(),
         password: Yup.string().required().min(6),
@@ -26,21 +25,20 @@ class UserController {
 
     return response.status(400).json({error: err.errors})
 }
-        const {name,estabelecimento, cod, tel, email, password, admin} = request.body
+        const {name,estabelecimento, tel, email, password, admin} = request.body
 
         const userExists = await User.findOne({
             where: { email },
         })
 
         if(userExists){
-            return response.status(400).json({error: 'User aleready exists'})
+            return response.status(409).json({error: 'User aleready exists'})
         }
 
         const user =  await User.create({
             id: v4(),
             name,
             estabelecimento,
-            cod,
             tel,
             email,
             password,

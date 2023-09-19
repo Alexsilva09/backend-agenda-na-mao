@@ -41,8 +41,6 @@ routes.post('/filter', AgendaFilterController.filter)
 routes.post('/diasdisponiveis', DiasController.filter)
 
 
-
-
 //routes.use(authMiddleware) 
 
 

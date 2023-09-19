@@ -33,7 +33,7 @@ class SessionController{
         if(!(await user.checkPassword(password))){
             return response.status(400).json({error: 'make sure yout password or email are correct'})
         }
-        return response.json({
+        return response.status(200).json({
             id: user.id, 
             email, 
             name: user.name,
